@@ -6,9 +6,16 @@ namespace CustomList
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            _List list = new _List();
+            list.Add(3);
+            list.Add(3);
+            list.Add(3);
+            list.Add(3);
+            list.Add(3);
+            foreach (int number in list)
+            {
+                Console.WriteLine(number);
+            }
         }
     }
-
-    
 }

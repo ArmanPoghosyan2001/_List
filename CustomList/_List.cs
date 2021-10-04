@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CustomList
 {
-    public class _List
+    public class _List 
     {
         private const int _defaultCapacity = 4;
 
@@ -85,8 +86,6 @@ namespace CustomList
             if (_items.Length < min)
             {
                 int newCapacity = _items.Length == 0 ? _defaultCapacity : _items.Length * 2;
-                // Allow the list to grow to maximum possible capacity (~2G elements) before encountering overflow.
-                // Note that this check works even when _items.Length overflowed thanks to the (uint) cast
                 if ((uint)newCapacity > 0X7FEFFFFF) newCapacity = 0X7FEFFFFF;
                 if (newCapacity < min) newCapacity = min;
                 Capacity = newCapacity;
@@ -176,6 +175,34 @@ namespace CustomList
         public override string ToString()
         {
             return $"Count = {Count}";
+        }
+
+        public ListEnumerator GetEnumerator()
+        {
+            return new ListEnumerator(_items, Count);
+        }
+    }
+    public class ListEnumerator 
+    {
+        private int[] items;
+        private int counter = 0;
+        private int size;
+        public ListEnumerator(int[] _items, int _size)
+        {
+            items = _items;
+            size = _size;
+        }
+
+        public object Current => items[counter++];
+
+        public bool MoveNext()
+        {
+            return counter < size;
+        }
+
+        public void Reset()
+        {
+            counter = 0;
         }
     }
 }
