@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace CustomList
 {
-    public class _List 
+    public class _List<T>
     {
         private const int _defaultCapacity = 4;
 
-        private int[] _items;
+        private T[] _items;
         private int _size;
         private int _version;
 
-        static readonly int[] _emptyArray = new int[0];
+        static readonly T[] _emptyArray = new T[0];
 
         public _List()
         {
@@ -27,7 +27,7 @@ namespace CustomList
             if (capacity == 0)
                 _items = _emptyArray;
             else
-                _items = new int[capacity];
+                _items = new T[capacity];
         }
         public int Capacity
         {
@@ -41,7 +41,7 @@ namespace CustomList
                 {
                     if (value > 0)
                     {
-                        int[] newItems = new int[value];
+                        T[] newItems = new T[value];
                         if (_size > 0)
                         {
                             Array.Copy(_items, 0, newItems, 0, _size);
@@ -62,7 +62,7 @@ namespace CustomList
                 return _size;
             }
         }
-        public int this[int index]
+        public T this[int index]
         {
             get
             {
@@ -75,7 +75,7 @@ namespace CustomList
                 _version++;
             }
         }
-        public void Add(int item)
+        public void Add(T item)
         {
             if (_size == _items.Length) EnsureCapacity(_size + 1);
             _items[_size++] = item;
@@ -100,18 +100,12 @@ namespace CustomList
             }
             _version++;
         }
-        public _List GetRange(int index, int count)
-        {
-            _List list = new _List(count);
-            Array.Copy(_items, index, list._items, 0, count);
-            list._size = count;
-            return list;
-        }
-        public int IndexOf(int item)
+    
+        public int IndexOf(T item)
         {
             return Array.IndexOf(_items, item, 0, _size);
         }
-        public void Insert(int index, int item)
+        public void Insert(int index, T item)
         {
             if (_size == _items.Length) EnsureCapacity(_size + 1);
             if (index < _size)
@@ -122,7 +116,7 @@ namespace CustomList
             _size++;
             _version++;
         }
-        public bool Remove(int item)
+        public bool Remove(T item)
         {
             int index = IndexOf(item);
             if (index >= 0)
@@ -140,7 +134,7 @@ namespace CustomList
             {
                 Array.Copy(_items, index + 1, _items, index, _size - index);
             }
-            _items[_size] = default(int);
+            _items[_size] = default(T);
             _version++;
         }
         public void RemoveRange(int index, int count)
@@ -166,9 +160,9 @@ namespace CustomList
             Array.Reverse(_items, index, count);
             _version++;
         }
-        public int[] ToArray()
+        public T[] ToArray()
         {
-            int[] array = new int[_size];
+            T[] array = new T[_size];
             Array.Copy(_items, 0, array, 0, _size);
             return array;
         }
