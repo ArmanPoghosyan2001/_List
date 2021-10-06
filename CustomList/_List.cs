@@ -177,32 +177,12 @@ namespace CustomList
             return $"Count = {Count}";
         }
 
-        public ListEnumerator GetEnumerator()
+        public IEnumerator GetEnumerator()
         {
-            return new ListEnumerator(_items, Count);
-        }
-    }
-    public class ListEnumerator 
-    {
-        private int[] items;
-        private int counter = 0;
-        private int size;
-        public ListEnumerator(int[] _items, int _size)
-        {
-            items = _items;
-            size = _size;
-        }
-
-        public object Current => items[counter++];
-
-        public bool MoveNext()
-        {
-            return counter < size;
-        }
-
-        public void Reset()
-        {
-            counter = 0;
+            for (int i = 0; i < Count; i++)
+            {
+                yield return _items[i];
+            }
         }
     }
 }
